@@ -40,6 +40,7 @@ public class bukuadapter extends RecyclerView.Adapter<bukuadapter.ViewHolder> {
     holder.texttitle.setText(item.get(position).getJudul());
     Picasso.get()
             .load(base_url+item.get(position).getGambar())
+            .resize(500,300)
             .into(holder.imageView);
     }
     @Override
