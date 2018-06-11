@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">TestChasecan</string>
+    <string name="title_activity_catalog">CatalogActivity</string>
+    <string name="title_activity_add_book">AddBookActivity</string>
+</resources>
