@@ -3,8 +3,10 @@ package com.inotech.kejarkoding.testchasecan.activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -42,11 +44,13 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class CatalogActivity extends AppCompatActivity {
+public class CatalogActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     LinearLayoutManager layoutManager;
     List<ValBuku> valBukus = null;
     ApiInterface apiInterface;
     bukuadapter bukuadapters;
+    SwipeRefreshLayout swipeRefreshLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +60,12 @@ public class CatalogActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
-
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+        swipeRefreshLayout.setColorScheme(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+        swipeRefreshLayout.setOnRefreshListener(this);
         getbukuList();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -96,5 +105,16 @@ public class CatalogActivity extends AppCompatActivity {
         }catch (Exception e){
             Log.d("1234","Exception");
         }
+    }
+
+    @Override
+    public void onRefresh() {
+    new Handler().postDelayed(new Runnable() {
+        @Override
+        public void run() {
+            getbukuList();
+            swipeRefreshLayout.setRefreshing(false);
+        }
+    },0);
     }
 }
